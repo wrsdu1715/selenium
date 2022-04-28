@@ -10,3 +10,5 @@
 # Formatter
 1. pipでformat用のblackをインストールする
 `pip install black`
+2. 実行
+` black ファイル名`
