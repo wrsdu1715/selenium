@@ -57,10 +57,18 @@ if __name__ == "__main__":
         "body > div.theme-hyakumeiten.theme-hyakumeiten--ramen.is-east > div.hyakumeiten-contents > div.hyakumeiten-main-frame > div.hyakumeiten-main.hyakumeiten-main--rstlst > div.hyakumeiten-main__contents > div.hyakumeiten-search > div.hyakumeiten-search__area.js-search-area",
     ).click()
     time.sleep(3)
-    driver.find_element(
+    areas = driver.find_elements(
         By.CSS_SELECTOR,
-        "body > div.theme-hyakumeiten.theme-hyakumeiten--ramen.is-east > div.hyakumeiten-contents > div.hyakumeiten-main-frame > div.hyakumeiten-main.hyakumeiten-main--rstlst > div.hyakumeiten-main__contents > div.hyakumeiten-search > div.hyakumeiten-search__area.js-search-area > div.hyakumeiten-search__trigger.hyakumeiten-search__trigger--area1 > div > div > div > a:nth-child(2)",
-    ).click()
-    time.sleep(3)
-    get_store_data()
+        "body > div.theme-hyakumeiten.theme-hyakumeiten--ramen.is-east > div.hyakumeiten-contents > div.hyakumeiten-main-frame > div.hyakumeiten-main.hyakumeiten-main--rstlst > div.hyakumeiten-main__contents > div.hyakumeiten-search > div.hyakumeiten-search__area.js-search-area > div.hyakumeiten-search__trigger.hyakumeiten-search__trigger--area1 > div > div > div > a",
+    )
+    areas_link = []
+    for area in areas:
+        area_class_name = area.get_attribute("class")
+        if not ("is-selected" in area_class_name or "is-disabled" in area_class_name):
+            areas_link.append(area.get_attribute("href"))
+    for area_link in areas_link:
+        driver.get(area_link)
+        get_store_data()
+        driver.switch_to.window(driver.window_handles[0])  # 別タブへ移動
+        time.sleep(2)
     driver.quit()
